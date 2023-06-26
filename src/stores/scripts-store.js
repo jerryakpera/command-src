@@ -11,9 +11,83 @@ export const useScriptsStore = defineStore("scripts", {
 
   getters: {
     allScripts: (state) => state.scripts,
+    favoritesFirstScripts: (state) =>
+      state.scripts.sort((a, b) => {
+        return Number(b.favorite) - Number(a.favorite);
+      }),
   },
 
   actions: {
+    getDateFromID(id) {
+      const [a, date] = id.split("-");
+      return date;
+    },
+
+    sortScriptsByFavorite(direction) {
+      if (direction === "asc") {
+        this.scripts.sort((a, b) => {
+          const aFavorite = Number(a.favorite) || 0;
+          const bFavorite = Number(b.favorite) || 0;
+
+          return bFavorite - aFavorite;
+        });
+      }
+      if (direction === "desc") {
+        this.scripts
+          .sort((a, b) => {
+            const aFavorite = Number(a.favorite) || 0;
+            const bFavorite = Number(b.favorite) || 0;
+
+            return bFavorite - aFavorite;
+          })
+          .reverse();
+      }
+    },
+
+    sortScriptsByCopyCount(direction) {
+      if (direction === "asc") {
+        this.scripts.sort((a, b) => {
+          const aCopyCount = Number(a.copyCount) || 0;
+          const bCopyCount = Number(b.copyCount) || 0;
+
+          return bCopyCount - aCopyCount;
+        });
+      }
+
+      if (direction === "desc") {
+        this.scripts
+          .sort((a, b) => {
+            const aCopyCount = Number(a.copyCount) || 0;
+            const bCopyCount = Number(b.copyCount) || 0;
+
+            return bCopyCount - aCopyCount;
+          })
+          .reverse();
+      }
+    },
+
+    sortScriptsByDate(direction) {
+      if (direction === "asc") {
+        this.scripts.sort((a, b) => {
+          const aDate = this.getDateFromID(a._id);
+          const bDate = this.getDateFromID(b._id);
+
+          return bDate - aDate;
+        });
+      }
+
+      if (direction === "desc") {
+        this.scripts
+          .sort((a, b) => {
+            const aDate = this.getDateFromID(a._id);
+            const bDate = this.getDateFromID(b._id);
+
+            return bDate - aDate;
+          })
+          .reverse();
+      }
+    },
+
     getDuplicateTerminalAndDesc({ terminal, description }) {
       return this.scripts.find((script) => {
         const lowercaseTerminal = script.terminal.toLowerCase();
@@ -73,7 +147,9 @@ export const useScriptsStore = defineStore("scripts", {
     addCopyCount(id) {
       this._scripts = this._scripts.map((script) => {
         if (script._id === id) {
-          script.copyCount >= 0 ? (script.copyCount += 1) : 1;
+          if (!script.copyCount) {
+            script.copyCount = 1;
+          } else script.copyCount += 1;
         }
 
         return script;

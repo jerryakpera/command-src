@@ -26,14 +26,15 @@
             outlined
             use-input
             autofocus
+            lazy-rules
+            stack-label
             color="secondary"
-            class="text-dark"
             v-model="terminal"
             input-debounce="0"
-            label-color="dark"
             @filter="filterFn"
             :options="options"
             :rules="[isRequired]"
+            label-color="secondary"
             label="terminal (version)"
             new-value-mode="add-unique"
           >
@@ -48,9 +49,10 @@
         <div class="col-8">
           <q-input
             outlined
+            stack-label
             color="secondary"
-            label-color="dark"
             label="Description"
+            label-color="secondary"
             v-model="description"
             :rules="[isRequired]"
           />

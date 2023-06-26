@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row q-col-gutter-sm q-mb-md">
+    <div class="row q-col-gutter-sm q-mb-sm">
       <div class="col-3">
         <q-input
           outlined
@@ -19,11 +19,23 @@
       </div>
     </div>
 
+    <q-card-section
+      class="q-pa-none q-mt-none q-mb-sm"
+      v-if="scriptsStore?.allScripts?.length > 0"
+    >
+      <ScriptSorter
+        :sortBy="sortBy"
+        v-model="sortBy"
+        :sortDirection="sortDirection"
+        v-model:sort-direction="sortDirection"
+      />
+    </q-card-section>
+
     <q-scroll-area
-      :thumb-style="thumbStyle"
+      class="q-pr-none"
       :bar-style="barStyle"
       style="height: 350px"
-      class="q-pr-md"
+      :thumb-style="thumbStyle"
     >
       <ScriptItem
         v-for="(item, i) in scriptsStore.allScripts"
@@ -36,18 +48,18 @@
 
 <script setup>
 import ScriptItem from "components/ScriptItem.vue";
+import ScriptSorter from "components/ScriptSorter.vue";
 
 import { useScriptsStore } from "stores/scripts-store";
-import { computed, watch } from "vue";
+import { computed, watch, ref } from "vue";
 
 const scriptsStore = useScriptsStore();
 
+const sortBy = ref("");
+const sortDirection = ref("asc");
+
 const terminalFilter = computed(() => scriptsStore.terminalFilter);
 const descriptionFilter = computed(() => scriptsStore.descriptionFilter);
-
-const resetScripts = () => {
-  scriptsStore.scripts = scriptsStore._scripts;
-};
 
 const handleTerminalFilter = (terminal) => {
   scriptsStore.scripts = scriptsStore._scripts.filter((script) => {
@@ -75,6 +87,34 @@ watch(terminalFilter, (current) => {
 
 watch(descriptionFilter, (current) => {
   handleDescriptionFilter(current);
+});
+
+watch(sortBy, (current) => {
+  if (current === "favorite") {
+    scriptsStore.sortScriptsByFavorite(sortDirection.value);
+  }
+
+  if (current === "copy-count") {
+    scriptsStore.sortScriptsByCopyCount(sortDirection.value);
+  }
+
+  if (current === "date") {
+    scriptsStore.sortScriptsByDate(sortDirection.value);
+  }
+});
+
+watch(sortDirection, (current) => {
+  if (sortBy.value === "favorite") {
+    scriptsStore.sortScriptsByFavorite(current);
+  }
+
+  if (sortBy.value === "copy-count") {
+    scriptsStore.sortScriptsByCopyCount(current);
+  }
+
+  if (sortBy.value === "date") {
+    scriptsStore.sortScriptsByDate(current);
+  }
 });
 
 const thumbStyle = {

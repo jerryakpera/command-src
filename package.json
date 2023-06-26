@@ -1,8 +1,8 @@
 {
-  "name": "cmder",
+  "name": "terminal_command_library",
   "version": "0.0.1",
   "description": "A Browser extension for managing commonly used terminal scripts",
-  "productName": "CMDEr",
+  "productName": "TerminalCommandLibrary",
   "author": "Jeremiah Akpera <jerryakpera@gmail.com>",
   "private": true,
   "scripts": {

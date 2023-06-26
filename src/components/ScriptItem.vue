@@ -2,8 +2,8 @@
   <q-card
     flat
     class="q-mb-sm"
-    :class="$q.dark.isActive ? 'bg-secondary' : 'bg-secondary'"
-    style="padding: 2px; border-radius: 10px"
+    :class="item.favorite ? 'bg-secondary' : 'bg-grey-5'"
+    style="padding: 1px; border-radius: 10px"
   >
     <q-expansion-item
       label="First"
@@ -26,14 +26,14 @@
 
           <div class="flex items-center q-col-gutter-sm">
             <q-icon
-              size="sm"
+              size="xs"
               color="secondary"
-              name="las la-star"
+              name="las la-thumbs-up"
               v-if="item.favorite"
             />
 
             <div class="text-secondary text-body2 text-weight-bold">
-              {{ item.copyCount }}
+              {{ item.copyCount || 0 }}
             </div>
           </div>
         </div>
@@ -47,35 +47,38 @@
           <div class="flex items-center q-col-gutter-xs">
             <div>
               <q-btn
-                unelevated
                 dense
+                no-caps
+                unelevated
                 color="secondary"
+                style="padding: 3px 10px"
                 @click="handleCopy(item)"
               >
                 Copy
-                <q-icon size="sm" class="q-ml-xs" name="las la-copy" />
+                <q-icon size="xs" class="q-ml-xs" name="las la-copy" />
               </q-btn>
             </div>
 
             <div>
               <q-btn
-                unelevated
                 dense
-                color="accent"
+                :outline="!item.favorite"
+                :unelevated="item.favorite"
+                :color="item.favorite ? 'secondary' : 'grey-6'"
                 @click="handleFavoriteScript(item._id)"
               >
-                <q-icon name="las la-star" />
+                <q-icon size="xs" name="las la-thumbs-up" />
               </q-btn>
             </div>
 
             <div>
               <q-btn
-                unelevated
                 dense
+                unelevated
                 color="negative"
                 @click="handleDeleteScript(item._id)"
               >
-                <q-icon name="las la-trash" />
+                <q-icon size="xs" name="las la-trash" />
               </q-btn>
             </div>
           </div>

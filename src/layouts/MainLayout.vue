@@ -1,11 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-page-container class="q-pa-md">
-      <q-card
-        flat
-        style="border-radius: 10px"
-        :style="$q.dark.isActive ? '' : 'border: 1px solid #ccc'"
-      >
+      <q-card flat style="border-radius: 10px; border: 1px solid #0096c7">
         <q-tabs
           dense
           no-caps
@@ -36,7 +32,7 @@
         <q-card
           flat
           class="bg-secondary"
-          style="padding: 2px; border-radius: 0 0 10px 10px"
+          style="padding: 1px 0 0px 0; border-radius: 0 0 10px 10px"
         >
           <q-card-section
             class="q-pa-md"
